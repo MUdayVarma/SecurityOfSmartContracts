@@ -4,7 +4,10 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 **Contents:**
 
 (1) [Denial-of-Service Attacks - Part01](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#1-denial-of-service-attacks)
-(2) [Denial-of-Service Attacks - Part02]
+
+(2) [Denial-of-Service Attacks - Part02](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#2-denial-of-service-attacks---part02)
+
+(3) Donation Attacks
  
 
 ------------------------------------------------- 
@@ -75,4 +78,19 @@ Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checkl
 
 ------------------------------------------------- 
 
+## (3) Donation Attacks
 
+**Description:** Attackers can manipulate the accounting by donating tokens.
+
+_Remediation_: Implement internal accounting instead of relying on `balanceOf` natively.
+
+### A brief overview
+
+A Donation Attack exploits vulnerabilities in how a contract manages token balances. It often stems from an incorrect state due to an assumption of external factors. The core of the vulnerability lies in the attacker's ability to manipulate the contract's state. Imagine an attacker cleverly "donating" tokens directly to a contract instead of using the protocol's interface. This seemingly altruistic act can severely disrupt the contract's logic and lead to unfair distributions of assets, potentially harming legitimate users. The attacker can manipulate the contract's state if the protocol does not account for such direct transfers and solely relies on the token balance for accounting.
+
+This item aims to prevent the Donation Attack vulnerability by ensuring the protocol does not rely on external functions like balanceOf or balance for accounting. This checklist item directly relates to internal accounting - a method of accurately tracking asset ownership and balances within a smart contract. Internal accounting utilizes dedicated state variables to store and manage balances, rather than relying on external functions like balanceOf.
+
+The vulnerability in external accounting is that anyone can send tokens directly to a contract, regardless of intended logic. If your contract uses token.balanceOf(address(this)) to calculate shares, withdrawals, or any critical value, an attacker can donate tokens, irrevocably compromising the system and potentially altering the intended outcome.
+
+
+------------------------------------------------- 
