@@ -7,7 +7,9 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (2) [Denial-of-Service Attacks - Part02](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#2-denial-of-service-attacks---part02)
 
-(3) Donation Attacks
+(3) [Donation Attacks] (https://github.com/MUdayVarma/SecurityOfSmartContracts/blob/main/README.md#3-donation-attacks)
+
+(4) [Front-Running Attacks] ()
  
 
 ------------------------------------------------- 
@@ -22,8 +24,22 @@ But then someone comes and keeps ordering thousands of empty cups of coffee, clo
 
 This are three checklist items:
 - Is the withdrawal pattern followed to prevent denial of service?
+
+  **Description1**: To prevent denial of service attacks during withdrawals, it's critical to follow the withdrawal pattern best practices - pull based approach.
+
+  _Remediation_: Implement withdrawal pattern best practices to ensure that contract behavior remains predictable and robust against denial of service attacks.
+
 - Is there a minimum transaction amount enforced?
+  
+  **Description2:** Enforcing a minimum transaction amount can prevent attackers from clogging the network with zero amount or dust transactions.
+    
+  _Remediation:_ Disallow transactions below a certain threshold to maintain efficiency and prevent denial of service through dust spamming.
+
 - How does the protocol handle blacklisting functionality tokens?
+
+  **Description3:** Tokens with blacklisting capabilities, such as USDC, can pose unique risks and challenges to protocols.
+
+  _Remediation:_ Account for the possibility of blacklisting within token protocols to ensure continued functionality even if certain addresses are blacklisted.
 
 ### High-level overview
 DoS attacks are usually about leveraging design flaws in your smart contract logic. It's not brute force. They are using subtle manipulation to beat you.Here's a breakdown of the general idea:
@@ -52,6 +68,19 @@ Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checkl
 ## (2) Denial-of-Service Attacks - Part02
 
 Learn how to prevent denial-of-service (DoS) attacks in smart contracts by securing queues, handling low-decimal tokens, and managing external calls safely. We'll delve into queue processing vulnerabilities, the challenges presented by low-decimal tokens, and the importance of handling external contract calls safely. 
+
+**Description4:** Forcing protocols to process queues, like a queue of dust withdrawals, can be exploited to cause a denial of service.
+
+**Remediation:** Design queue processing in a manner that is resilient to spam and cannot be exploited to cause denial of service.
+
+**Description5:** Tokens with low decimals can present issues where the transaction process fails due to rounding to zero amounts.
+
+**Remediation:** Implement logic to handle low decimal tokens in a way that prevents the transaction process from breaking due to insufficient token amounts.
+
+**Description6:** Protocols must handle interactions with external contracts in a way that does not compromise their functionality if external dependencies fail.
+
+**Remediation:** Ensure robust handling of external contract interactions to maintain protocol integrity regardless of external contract performance.
+
 
 ### A brief overview
 
@@ -90,7 +119,54 @@ A Donation Attack exploits vulnerabilities in how a contract manages token balan
 
 This item aims to prevent the Donation Attack vulnerability by ensuring the protocol does not rely on external functions like balanceOf or balance for accounting. This checklist item directly relates to internal accounting - a method of accurately tracking asset ownership and balances within a smart contract. Internal accounting utilizes dedicated state variables to store and manage balances, rather than relying on external functions like balanceOf.
 
-The vulnerability in external accounting is that anyone can send tokens directly to a contract, regardless of intended logic. If your contract uses token.balanceOf(address(this)) to calculate shares, withdrawals, or any critical value, an attacker can donate tokens, irrevocably compromising the system and potentially altering the intended outcome.
+The vulnerability in external accounting is that anyone can send tokens directly to a contract, regardless of intended logic. If your contract uses token.balanceOf(address(this)) to calculate shares, withdrawals, or any critical value, an attacker can donate tokens, irrevocably compromising the system and potentially altering the intended outcome. 
 
+Read (for more detailed explaination):
+
+
+------------------------------------------------- 
+
+## (4) Front-Running Attacks
+
+Front-Running Attacks: To illustrate, imagine you're at a busy farmers market where prices change based on demand. You spot an amazing deal on rare truffles for $50 that you know are worth $100 elsewhere. As you walk up to buy, a market insider who can see all incoming customer orders notices your intention. They quickly jump ahead of you in line, buy the truffles for $50, and then immediately offer to sell them to you for $90. You still get the truffles, but now this middleman has pocketed $40 of value that would have been yours.That's front-running in a nutshell - seeing someone else's pending transaction in a public system and then inserting your own transaction ahead of it to profit from the price change you know is coming.
+
+In blockchain, this happens when attackers exploit the transparent nature of the mempool (where pending transactions wait to be mined, like packages waiting for delivery) to see the upcoming transactions. They then craft their own transactions with higher gas fees, ensuring theirs are executed first. This can lead to devastating consequences, from manipulated prices in decentralized exchanges (DEX) to stolen non-fungible tokens (NFTs).
+
+**Check1:** Are 'get-or-create' patterns protected against front-running attacks?
+  
+ - Description: Functions combining resource creation and interaction (like getOrCreateAndUse) are vulnerable to front-running attacks where attackers can create the resource with different parameters before the victim, potentially manipulating prices or conditions.
+   
+ - Remediation: Separate creation and interaction into distinct transactions or implement robust protections (parameter validation, relative references instead of absolute values) to ensure safe operation regardless of creation timing.
+
+**Check2:** Are two-transaction actions designed to be safe from frontrunning?
+  
+ - Description: Actions that require two separate transactions may be at risk of frontrunning, where an attacker can intervene between the two calls.
+   
+ - Remediation: Ensure critical actions that are split across multiple transactions cannot be interfered with by attackers. This can involve checks or locks between the transactions.
+
+**Check3:** Can users maliciously cause others' transactions to revert by preempting with dust?
+  
+ - Description: Attackers may cause legitimate transactions to fail by front-running with transactions of negligible amounts.
+   
+ - Remediation: Implement checks to prevent transactions with non-material amounts from affecting the contract's state or execution flow.
+
+**Check4:** s the protocol using a properly user-bound commit-reveal scheme?
+  
+ - Description: Sensitive on-chain actions can be exposed in the mempool, enabling frontrunning and information exploitation. Effective commit-reveal schemes must bind commitments to specific users and transactions.
+   
+ - Remediation: Implement a two-phase process where users first commit a hash containing their address and all transaction parameters, then reveal actual actions after the commitment phase ends, preventing frontrunning and information leakage.
+
+**Conclusion**
+Front-running attacks, like those potentially enabled by flawed commit-reveal schemes, are significant threats inherent to transparent blockchain environments. Because pending transactions often reside in a public mempool before confirmation, malicious actors can observe intentions and strategically submit their own transactions, often with higher gas fees, to execute before the target transaction for their own gain. This ability to observe and react before final execution is a unique challenge presented by the nature of public blockchains. Therefore, when developing or auditing any smart contract system, it is absolutely critical to adopt an adversarial mindset, particularly regarding timing and information availability:
+‍
+Always ask: "Can any function or interaction within this protocol be profitably front-run?"
+
+Consider: What potentially sensitive information (like bids, trade details, price data, governance votes) is revealed before an action is immutably settled on-chain?
+
+Analyze: What specific benefit could an attacker get by executing a transaction immediately before or after a specific user action? Could they capture arbitrage, manipulate prices, steal rewards, or censor others?
+‍
+Implement appropriate countermeasures, such as using secure commit-reveal patterns where necessary or minimizing dependencies on predictable external events. This is how developers build more resilient and trustworthy systems. Thinking like an attacker to anticipate vulnerabilities is fundamental to designing robust and secure smart contracts. 
+
+Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-4-front-running-attacks 
 
 ------------------------------------------------- 
