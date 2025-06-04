@@ -7,9 +7,11 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (2) [Denial-of-Service Attacks - Part02](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#2-denial-of-service-attacks---part02)
 
-(3) [Donation Attacks] (https://github.com/MUdayVarma/SecurityOfSmartContracts/blob/main/README.md#3-donation-attacks)
+(3) [Donation Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts/blob/main/README.md#3-donation-attacks) 
 
-(4) [Front-Running Attacks] ()
+(4) [Front-Running Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#4-front-running-attacks)  
+
+(5) [Griefing Attacks]() 
  
 
 ------------------------------------------------- 
@@ -121,7 +123,7 @@ This item aims to prevent the Donation Attack vulnerability by ensuring the prot
 
 The vulnerability in external accounting is that anyone can send tokens directly to a contract, regardless of intended logic. If your contract uses token.balanceOf(address(this)) to calculate shares, withdrawals, or any critical value, an attacker can donate tokens, irrevocably compromising the system and potentially altering the intended outcome. 
 
-Read (for more detailed explaination):
+Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-3-donation-attacks 
 
 
 ------------------------------------------------- 
@@ -168,5 +170,40 @@ Analyze: What specific benefit could an attacker get by executing a transaction 
 Implement appropriate countermeasures, such as using secure commit-reveal patterns where necessary or minimizing dependencies on predictable external events. This is how developers build more resilient and trustworthy systems. Thinking like an attacker to anticipate vulnerabilities is fundamental to designing robust and secure smart contracts. 
 
 Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-4-front-running-attacks 
+
+------------------------------------------------- 
+
+## (5) Griefing Attacks
+
+In a griefing attack, a malicious actor intends to disrupt or prevent legitimate users from executing desired functions. The attacker often incurs a cost (like gas fees) without gaining direct financial benefit from the disruptive action.
+
+The term "griefing" likely originates from online gaming communities, where it describes players who intentionally irritate and harass others, often breaking the game's intended flow for their amusement rather than strategic advantage. Similarly, in the context of smart contracts, griefing attacks prioritize disruption and annoyance over profit. It's worth noting that within the web3 security space, the terms "griefing" and "denial-of-service (DoS)" are sometimes used interchangeably. 
+
+A DoS attack is a term rooted in general network and computer security. It aims to make a service or a network unavailable to all users temporarily or indefinitely. This might involve overwhelming the system with traffic or exploiting vulnerabilities that prevent legitimate access for everyone. The goal is typically widespread disruption of the entire service. So, the scope and intent are the primary differentiators between the two attack types. However, the line can sometimes blur, which means some vulnerabilities might fit into either category. An impactful griefing attack could potentially lead to a DoS scenario for a subset of users or features.
+
+**Check1:** Is there an external function that relies on states that can be changed by others?
+  
+ - Description: Malicious actors can prevent regular user transactions by making a slight change to the on-chain states.
+   
+ - Remediation: Ensure normal user actions, especially important actions like withdrawal and repayment, are not disturbed by other actors.
+
+**Check2:** Can contract operations be manipulated with precise gas limit specifications?
+  
+ - Description: Attackers can supply carefully calculated gas amounts to force specific execution paths in the contract, manipulating its behavior in unexpected ways.
+   
+ - Remediation: Implement explicit gas checks before critical operations.
+
+**Conclusion:**
+
+Griefing attacks highlight that not all blockchain exploits aim for direct theft. Sometimes, the goal is simply disruption. By understanding the griefer's willingness to incur costs to inconvenience or block others, we can better anticipate vulnerabilities. Developing secure contracts requires an adversarial perspective:
+
+_Always ask_: Can one user's action, even if seemingly irrational or costly, prevent another legitimate user from using the protocol as intended?
+
+_Interrogate state changes_: Who controls the critical state? Can it be changed in a way that blocks others unfairly?
+
+_Validate external interactions_: Does my contract assume success for external calls? What happens if they fail (due to out-of-gas or other reasons)? Is the state updated only after necessary external operations are confirmed successful?
+By asking these questions and leveraging checklists like Solodit, developers can build more robust systems that are resistant to griefing attacks.
+
+
 
 ------------------------------------------------- 
