@@ -11,7 +11,9 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (4) [Front-Running Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#4-front-running-attacks)  
 
-(5) [Griefing Attacks]() 
+(5) [Griefing Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#5-griefing-attacks) 
+
+(6) [Miner Attacks]()
  
 
 ------------------------------------------------- 
@@ -207,3 +209,48 @@ By asking these questions and leveraging checklists like Solodit, developers can
 
 
 ------------------------------------------------- 
+
+## (6) Miner Attacks - Miner influence in blockchain systems
+
+Miners possess several protocol-granted capabilities that directly impact blockchain operation. They determine transaction inclusion and ordering within blocks based on fee incentives (gas prices in Ethereum), giving them control over the mempool processing queue. This ordering power enables the profit capture of maximal extractable value (MEV) through strategic transaction positioning without violating consensus rules. Miners can manipulate block timestamps within network-defined tolerances, typically ±15 seconds in Ethereum and up to 2 hours in Bitcoin, which can potentially affect time-dependent contract logic, such as unlocking periods or interest calculations.
+
+While other interesting attack vectors exist, including:
+
+- 51% attacks: Controlling the majority of the hashrate to enable double-spending.
+‍
+- Selfish mining: Strategically withholding blocks to increase relative rewards.
+‍
+- Timejacking: Manipulating network time perception.
+‍
+- Eclipse attacks: Isolating nodes from honest peers)
+
+Yet, these typically require either substantial computational resources or sophisticated network control mechanisms beyond standard mining operations. Such attacks target consensus-layer vulnerabilities rather than application-layer contract exploits.
+
+**Check1:** Is block.timestamp used for time-sensitive operations?
+  
+ - Description: Miners can manipulate block.timestamp by several seconds, potentially affecting time-dependent contract logic.
+   
+ - Remediation: Use block.number instead of timestamps for critical timing operations, or ensure that manipulation tolerance is acceptable.
+
+**Check2:** Is the contract using block properties like timestamp or difficulty for randomness generation?
+  
+ - Description: Block properties (timestamp, difficulty) and other predictable values should not be used for randomness as they can be influenced or predicted by miners.
+   
+ - Remediation: Use a secure randomness source, such as Chainlink VRF, commit-reveal schemes, or a provably fair randomization mechanism, instead.
+
+**Check3:** Is contract logic sensitive to transaction ordering?
+  
+ - Description: Miners control transaction ordering and can exploit this for front-running, back-running, or sandwich attacks.
+   
+ - Remediation: Implement protection by allowing users to specify acceptable results that revert transactions when breached.
+
+‍**Key takeaways:**
+
+- block.timestamp is not a reliable time source. Use block.number or external oracles for critical timing operations.
+‍
+- Never use block properties for randomness. Opt for secure randomness sources like Chainlink VRF.
+‍
+- Be mindful of transaction ordering. Implement mitigation strategies like slippage protection.
+------------------------------------------------- 
+
+
