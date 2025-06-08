@@ -13,7 +13,9 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (5) [Griefing Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#5-griefing-attacks) 
 
-(6) [Miner Attacks]()
+(6) [Miner Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#6-miner-attacks---miner-influence-in-blockchain-systems) 
+
+(7) [Price Manipulation Attacks]()
  
 
 ------------------------------------------------- 
@@ -206,7 +208,7 @@ _Interrogate state changes_: Who controls the critical state? Can it be changed 
 _Validate external interactions_: Does my contract assume success for external calls? What happens if they fail (due to out-of-gas or other reasons)? Is the state updated only after necessary external operations are confirmed successful?
 By asking these questions and leveraging checklists like Solodit, developers can build more robust systems that are resistant to griefing attacks.
 
-
+Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-5-griefing-attacks 
 
 ------------------------------------------------- 
 
@@ -251,6 +253,45 @@ Yet, these typically require either substantial computational resources or sophi
 - Never use block properties for randomness. Opt for secure randomness sources like Chainlink VRF.
 ‍
 - Be mindful of transaction ordering. Implement mitigation strategies like slippage protection.
+
+Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-6-miner-attacks 
+
+------------------------------------------------- 
+
+## (7) Price Manipulation Attacks
+
+Price Manipulation Attacks are a prevalent threat in decentralized finance (DeFi), exploiting vulnerabilities in protocols to artificially skew asset prices for illicit profits. In 2024 alone, these attacks have accounted for over $52 million in losses across 37 incidents, making them the second most damaging attack vector. Attackers often leverage flash loans or exploit weak oracles to create price discrepancies, impacting critical components like lending platforms, decentralized exchanges (DEXs), and stablecoins.
+
+**Check1:** Is the price calculated by the ratio of token balances?
+  
+ - Description: Price can be manipulated via flash loans or donations if it is derived from the ratio of token balances.
+   
+ - Remediation: Use Chainlink oracles for the asset prices.
+
+**Check2:** Is the price calculated from DEX liquidity pool spot prices?
+  
+ - Description: Spot price readings derived directly from DEX liquidity pools are vulnerable to manipulation through flash loans that can temporarily drain the pools.
+   
+ - Remediation: Use TWAP (time-weighted average price) with appropriate time windows based on asset volatility and liquidity, or use reliable oracle solutions.
+
+
+**Conclusion**
+We've explored critical vulnerabilities related to price manipulation in DeFi protocols. By understanding how attackers can distort on-chain price calculations, whether from direct contract token balances or volatile DEX spot prices, developers can build stronger defenses. The increasing sophistication of DeFi requires robust security measures integrated from the ground up. For further resources, check out the Cyfrin audit checklist.
+
+**Key takeaways:**
+
+Token balance ratios are unsafe: Never derive critical asset prices solely from a contract's internal token balances.
+
+- **DEX spot prices are volatile:** Avoid relying on raw, instantaneous spot prices from liquidity pools for significant financial operations.
+
+- **Oracles provide resilience:** Reliable oracle networks like Chainlink offer more trustworthy, manipulation-resistant price data sourced externally.
+
+- **TWAP is a powerful tool (for DEX sources):** If using DEX data, implement TWAPs over sufficient time windows to smooth price variations and deter flash loan attacks.
+
+Integrating these principles into your development significantly reduces the risk of price manipulation attacks, contributing to a safer and more reliable DeFi ecosystem.
+
+Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checklist-explained-7-price-manipulation-attacks 
+
 ------------------------------------------------- 
 
 
