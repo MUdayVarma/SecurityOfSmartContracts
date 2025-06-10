@@ -15,7 +15,9 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (6) [Miner Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#6-miner-attacks---miner-influence-in-blockchain-systems) 
 
-(7) [Price Manipulation Attacks]()
+(7) [Price Manipulation Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#7-price-manipulation-attacks) 
+
+(8) [Reentrancy Attacks]()
  
 
 ------------------------------------------------- 
@@ -294,4 +296,34 @@ Read (for more detailed explaination): https://www.cyfrin.io/blog/solodit-checkl
 
 ------------------------------------------------- 
 
+## (8) Reentrancy Attacks
 
+A reentrancy attack is the most widely known attack vector in smart contracts. It exploits a vulnerability where a function can be repeatedly invoked before its prior execution completes. This enables an attacker to manipulate the contract's state.
+
+**Check1:** Is there any state change after interaction with an external contract?
+  
+ - Description: Untrusted external contract calls could callback, leading to unexpected results such as multiple withdrawals or out-of-order events.
+   
+ - Remediation: Use the Check-Effects-Interactions pattern or reentrancy guards.
+
+**Check2:** Is there a view function that can return a stale value during interactions?
+  
+ - Description: Read-only reentrancy occurs when a view function is called during a reentrant execution. If the contract's state is temporarily inconsistent due to an ongoing external call, the view can return inaccurate data. This can mislead dependent protocols that rely on its output.
+   
+ - Remediation: Apply the Check-Effects-Interactions pattern to prevent inconsistent state, and ensure the reentrancy guard state is not ENTERED for critical view functions to prevent returning stale data.
+
+Key takeaways:
+
+Classic reentrancy: Updating state variables after an external call creates a window for re-entry, leading to exploits like illicit fund draining.
+
+**Check-Effects-Interactions pattern**: This is the primary defense strategy, ensuring all state changes occur before external calls.
+
+Reentrancy guards: Use a state variable, like a boolean or enum, with a modifier to lock a function during execution. This reverts any reentrant calls and effectively blocks reentrancy attacks.
+
+**Read-only reentrancy**: Even view functions can become vulnerable if they return data from a contract in a temporarily inconsistent state due to an ongoing external call initiated by another function. Other protocols relying on such "stale" values can make incorrect decisions.
+
+**Protecting view functions**: Fixing the root cause with Check-Effects-Interactions is essential. Moreover, reentrancy guard checks can be applied to critical view functions to prevent access during unsafe state windows.
+
+Adopting these practices greatly reduces the threat of reentrancy attacks and helps build a more secure and dependable decentralized landscape.
+
+------------------------------------------------- 
