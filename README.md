@@ -17,7 +17,10 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (7) [Price Manipulation Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#7-price-manipulation-attacks) 
 
-(8) [Reentrancy Attacks]()
+(8) [Reentrancy Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#8-reentrancy-attacks) 
+
+(9) [Replay Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#8-reentrancy-attacks) 
+
  
 
 ------------------------------------------------- 
@@ -325,5 +328,43 @@ Reentrancy guards: Use a state variable, like a boolean or enum, with a modifier
 **Protecting view functions**: Fixing the root cause with Check-Effects-Interactions is essential. Moreover, reentrancy guard checks can be applied to critical view functions to prevent access during unsafe state windows.
 
 Adopting these practices greatly reduces the threat of reentrancy attacks and helps build a more secure and dependable decentralized landscape.
+
+------------------------------------------------- 
+
+## (9) Replay Attacks
+
+Replay Attack, a threat in which a valid transaction or signature is maliciously duplicated and re-executed. A replay attack occurs when a valid data transmission, such as a signed message or transaction, is maliciously repeated. In smart contracts, an attacker intercepts a legitimate, signed user action. Then they "replay" it later or on a different network to trigger an unintended state change, such as draining funds or executing a permissioned function without authorization. 
+To defend against these attacks, developers use several critical tools:
+
+- **Nonce (a "number used once”):** In blockchain, a nonce is a unique, sequential counter tied to a user's address. By requiring each signed action to include the user's current nonce, the contract can ensure that each action is executed only once. After processing, the nonce is incremented, so the signature can’t be reused.
+
+- **Chain-specific parameters:** With the rise of multiple Ethereum Virtual Machine (EVM)-compatible blockchains (e.g., Ethereum, Polygon, Arbitrum, etc.), a user's private key and address are often the same across networks. A signature created for a contract on Ethereum could be valid for an identical contract on Polygon if it doesn't contain chain-specific data. Including the block.chainid in the signed data ties the signature to a single, specific blockchain, preventing cross-chain replay attacks.
+
+- **Domain separator**: This is a cryptographic mechanism, standardized in EIP-712, that binds a signature to a specific application context. It's a unique hash containing information like the contract's name, version, address, and the chainid. This ensures a signature intended for one decentralized application (DApp) cannot be replayed in another, providing robust protection against both cross-chain and cross-DApp replay attacks.
+
+
+**Check1:**   Are there protections against replay attacks for failed transactions? 
+  
+ - Description: Failed transactions can become susceptible to replay attacks if not properly protected.
+   
+ - Remediation: Implement nonce-based or other mechanisms to ensure that each transaction can only be executed once. This prevents replay attacks, even if the transaction initially failed.
+
+**Check2:**  Is there protection against replaying signatures on different chains?
+  
+ - Description:  Signatures that are valid on one blockchain may be replayed on another, leading to potential security breaches.
+   
+ - Remediation:  Use chain-specific parameters, such as block.chainid, or domain separators as defined in EIP-712 to ensure signatures are only valid on the intended chain.
+
+**Conclusion**
+Replay attacks exploit valid user intentions in invalid contexts. By understanding how attackers can duplicate actions across time or across chains, we can build more precise and secure validation logic into our contracts.
+
+Developing secure contracts requires an adversarial perspective:
+
+- **Always ask:** Have I fully invalidated this signature after use? A nonce should be consumed regardless of whether the transaction succeeds or fails.
+
+- **Interrogate the signature's context:** Where is this signature valid? If your protocol operates or may operate on multiple chains, every off-chain signature must be bound to a specific chain via block.chainid or an EIP-712 domain separator.
+
+- **Validate every assumption:** Does my code assume a transaction will succeed? Does it assume a signature is only for one network? Proactively identifying and closing these implicit assumptions is key to preventing replay attacks.
+
 
 ------------------------------------------------- 
