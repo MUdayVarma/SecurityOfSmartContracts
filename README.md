@@ -19,9 +19,9 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (8) [Reentrancy Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#8-reentrancy-attacks) 
 
-(9) [Replay Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#8-reentrancy-attacks) 
+(9) [Replay Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#9-replay-attacks)
 
-(10) [Rug pukll]()
+(10) [Rug pull]()
  
 
 ------------------------------------------------- 
@@ -369,20 +369,20 @@ Developing secure contracts requires an adversarial perspective:
 
 ------------------------------------------------- 
 
-## (9) Replay Attacks
+## (9) Rug pull
 
-SOL-AM-RP-1: Can the admin of the protocol pull assets from the protocol?
+**SOL-AM-RP-1:** Can the admin of the protocol pull assets from the protocol?
 
-Description: Some protocols grant an admin the privilege of directly withdrawing assets. Generally, any actor that can directly affect user funds must be scrutinized.
+**Description:** Some protocols grant an admin the privilege of directly withdrawing assets. Generally, any actor that can directly affect user funds must be scrutinized.
 
-Remediation: Restrict access to only relevant parts of protocol funds, perhaps by tracking fees internally. Enforcing a time lock on admin actions can also mitigate the risk.
+**Remediation:** Restrict access to only relevant parts of protocol funds, perhaps by tracking fees internally. Enforcing a time lock on admin actions can also mitigate the risk.
 
 **Conclusion**
 Managing administrative privileges is essential for safeguarding security and maintaining user trust. Unrestricted access to assets can result in devastating losses, as demonstrated by incidents like the Zunami Protocol, where unchecked admin privileges led to the complete depletion of user funds. Adhering to this checklist item is critical to preventing such vulnerabilities.
 
 Robust security requires proactive measures, including tightly controlled admin functions and well-designed safeguards to mitigate risks.
 
-In the next article, we will examine another vital aspect of smart contract security: the Sandwich Attack. 
+
 ------------------------------------------------- 
 
 
