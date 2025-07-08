@@ -22,7 +22,13 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 (9) [Replay Attacks](https://github.com/MUdayVarma/SecurityOfSmartContracts?tab=readme-ov-file#9-replay-attacks)
 
 (10) [Rug pull]()
- 
+
+
+----------------------------------
+
+**ARTICLES:**
+
+ (1) State of Crypto Security 2025
 
 ------------------------------------------------- 
 
@@ -369,7 +375,7 @@ Developing secure contracts requires an adversarial perspective:
 
 ------------------------------------------------- 
 
-## (9) Rug pull
+## (10) Rug pull
 
 **SOL-AM-RP-1:** Can the admin of the protocol pull assets from the protocol?
 
@@ -381,7 +387,14 @@ Developing secure contracts requires an adversarial perspective:
 Managing administrative privileges is essential for safeguarding security and maintaining user trust. Unrestricted access to assets can result in devastating losses, as demonstrated by incidents like the Zunami Protocol, where unchecked admin privileges led to the complete depletion of user funds. Adhering to this checklist item is critical to preventing such vulnerabilities.
 
 Robust security requires proactive measures, including tightly controlled admin functions and well-designed safeguards to mitigate risks.
+------------------------------------------------- 
 
+------------------------------------------------- 
+## ARTICLES
+
+[202507] [Cyfrin Jul2025 Newsletter] - : [State of Crypto Security 2025](https://research.areta.io/state-of-crypto-security-2025)
+
+Areta’s State of Crypto Security 2025 report reveals why full-stack security is now essential across the entire web3 development lifecycle.
 
 ------------------------------------------------- 
 
