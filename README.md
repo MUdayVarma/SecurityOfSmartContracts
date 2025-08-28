@@ -23,12 +23,13 @@ To Secure Smart Contracts from potential threats and risks through industry prov
 
 (10) [Rug pull]()
 
-
 ----------------------------------
 
 **ARTICLES:**
 
  (1) State of Crypto Security 2025
+
+ (2) TradFi vs DeFi 
 
 ------------------------------------------------- 
 
@@ -392,9 +393,17 @@ Robust security requires proactive measures, including tightly controlled admin 
 ------------------------------------------------- 
 ## ARTICLES
 
-[202507] [Cyfrin Jul2025 Newsletter] - : [State of Crypto Security 2025](https://research.areta.io/state-of-crypto-security-2025)
+**[202507] [Cyfrin Jul2025 Newsletter]** - : [State of Crypto Security 2025](https://research.areta.io/state-of-crypto-security-2025)
 
 Areta’s State of Crypto Security 2025 report reveals why full-stack security is now essential across the entire web3 development lifecycle.
+
+
+**[20250811] [TradeFi Vs. DeFi]** - [Vulnerabilities In Permissioned Capital Market Smart Contract Protocols](https://www.cyfrin.io/blog/vulnerabilities-in-permissioned-capital-market-smart-contract-protocols) 
+
+There are three major differences between TradFi and DeFi protocols: 
+- Permission To Participate,
+- Capital Requirements, and
+- Regulatory Compliance.
 
 ------------------------------------------------- 
 
